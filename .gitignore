@@ -2,6 +2,9 @@
 **/.terraform/*
 **/Key/*
 
+# Local .DS_Store files
+*.DS_Store
+
 # .tfstate files
 *.tfstate
 *.tfstate.*
