@@ -10,10 +10,26 @@ provider "google" {
 resource "google_compute_network" "vpc_network" {
   name = "terraform-network"
 }
+
+## Firewall
+resource "google_compute_firewall" "default" {
+  name    = "fw-services"
+  network = google_compute_network.vpc_network.self_link
+  allow {
+    protocol = "icmp"
+  }
+  allow {
+    protocol = "tcp"
+    ports    = ["22"]
+  }
+  target_tags = ["fw-services"]
+}
+
 ## Virtual Machines
 resource "google_compute_instance" "vm_instance" {
   name         = "terraform-01"
   machine_type = var.machine_type
+  tags         = ["fw-services"]
 
 boot_disk {
   initialize_params {
